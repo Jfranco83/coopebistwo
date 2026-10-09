@@ -1,0 +1,635 @@
+/* =====================================================================
+   COOINDEGABO · HOJA DE ESTILOS
+   ---------------------------------------------------------------------
+   ÍNDICE
+     1. Variables (colores, tipografía, medidas)  <- EDITA AQUÍ para cambiar el look
+     2. Reset y base
+     3. Accesibilidad (tamaño de letra, foco, movimiento reducido)
+     4. Piezas reutilizables (contenedor, botones, vidrio, imagen-espacio)
+     5. Fondo decorativo
+     6. Encabezado y menú
+     7. Carrusel principal
+     8. Accesos rápidos
+     9. Noticias
+    10. Convenios y ventana emergente
+    11. Información importante
+    12. Logos
+    13. Pie de página
+    14. Botones flotantes
+    15. Animaciones al hacer scroll
+    16. Ajustes responsive
+   ===================================================================== */
+
+
+/* =====================================================================
+   1. VARIABLES
+   Una "variable" (--nombre) se define una vez y se usa con var(--nombre).
+   Si cambias un color aquí, cambia en TODA la página.
+   ===================================================================== */
+:root {
+  /* --- Colores corporativos --- */
+  --azul: #04354b;                 /* Azul corporativo */
+  --azul-medio: #0b5675;           /* Variante más clara para degradados */
+  --azul-suave: #e3f0f6;           /* Azul muy claro para fondos */
+  --amarillo: #fcbb1b;             /* Amarillo corporativo (ver nota abajo) */
+  --negro: rgb(46, 42, 42);        /* Negro corporativo (textos) */
+
+  /* NOTA: el amarillo que enviaste (#cfbbb1b) tiene 7 dígitos y no es un color válido.
+     Asumí #fcbb1b. Si tu código es otro, cámbialo en la línea de arriba. */
+
+  /* --- Variantes neón (para brillos y botones destacados) --- */
+  --azul-neon: #19d3ff;
+  --amarillo-neon: #ffe347;
+
+  /* --- Degradados reutilizables --- */
+  --grad-azul: linear-gradient(135deg, #04354b 0%, #0b5675 60%, #138fb8 100%);
+  --grad-amarillo: linear-gradient(135deg, #fcbb1b 0%, #ffe347 100%);
+  --grad-neon: linear-gradient(135deg, #19d3ff 0%, #6fe9ff 50%, #ffe347 140%);
+
+  /* --- Fondos y vidrio --- */
+  --fondo: #f3f8fb;                          /* Fondo claro de la página */
+  --blanco: #ffffff;
+  --vidrio: rgba(255, 255, 255, 0.68);       /* Superficie "vidrio" */
+  --vidrio-borde: rgba(255, 255, 255, 0.85);
+
+  /* --- Tipografía --- */
+  --fuente: "Century Gothic", "Questrial", "Segoe UI", Arial, sans-serif;
+
+  /* --- Bordes redondeados --- */
+  --radio-s: 12px;
+  --radio-m: 20px;
+  --radio-l: 32px;
+
+  /* --- Sombras suaves --- */
+  --sombra-s: 0 4px 14px rgba(4, 53, 75, 0.08);
+  --sombra-m: 0 12px 32px rgba(4, 53, 75, 0.14);
+  --sombra-l: 0 24px 60px rgba(4, 53, 75, 0.20);
+
+  /* --- Otras medidas --- */
+  --ancho-max: 1200px;
+  --altura-header: 76px;
+  --transicion: 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+
+/* =====================================================================
+   2. RESET Y BASE
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; }  /* El padding no agranda las cajas */
+
+html {
+  scroll-behavior: smooth;                       /* Scroll suave entre secciones */
+  scroll-padding-top: calc(var(--altura-header) + 24px); /* Evita que el menú tape los títulos al navegar */
+  font-size: 100%;                               /* 100% = tamaño elegido por el usuario (JS lo cambia) */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fuente);
+  font-size: 1.0625rem;                          /* ~17px: cómodo de leer */
+  line-height: 1.65;
+  color: var(--negro);
+  background: var(--fondo);
+  overflow-x: hidden;                            /* Evita barra horizontal por las manchas del fondo */
+}
+
+img, svg { max-width: 100%; display: block; }
+h1, h2, h3, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+a { color: inherit; }
+button { font: inherit; color: inherit; cursor: pointer; }
+
+/* Los títulos y párrafos usan rem: así crecen cuando se pulsa "A+" */
+h1, h2, h3 { line-height: 1.2; color: var(--azul); }
+
+
+/* =====================================================================
+   3. ACCESIBILIDAD
+   ===================================================================== */
+
+/* Tamaños de letra: JavaScript agrega data-font="1|2" al <html>.
+   Como todo está en rem, basta cambiar el tamaño base. */
+html[data-font="1"] { font-size: 118%; }   /* Letra grande */
+html[data-font="2"] { font-size: 135%; }   /* Letra muy grande */
+
+/* Foco visible para quienes navegan con teclado */
+:focus-visible {
+  outline: 3px solid var(--azul-neon);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Enlace "Saltar al contenido": solo aparece al usar Tab */
+.skip-link {
+  position: absolute; left: 12px; top: -60px; z-index: 200;
+  background: var(--azul); color: #fff; padding: 10px 16px; border-radius: var(--radio-s);
+  transition: top var(--transicion);
+}
+.skip-link:focus { top: 12px; }
+
+/* Si el sistema del usuario pide menos movimiento, apagamos animaciones */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* =====================================================================
+   4. PIEZAS REUTILIZABLES
+   ===================================================================== */
+
+/* Contenedor centrado con márgenes laterales */
+.container {
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 32px);
+}
+
+/* Efecto vidrio (glassmorphism): fondo translúcido + desenfoque */
+.glass {
+  background: var(--vidrio);
+  border: 1px solid var(--vidrio-borde);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: var(--sombra-m);
+  border-radius: var(--radio-l);
+}
+
+/* ---- Botones ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px;                               /* Tamaño mínimo cómodo para tocar */
+  padding: 12px 26px;
+  border: 0; border-radius: 999px;
+  font-weight: 700; text-decoration: none; text-align: center;
+  transition: transform var(--transicion), box-shadow var(--transicion), filter var(--transicion);
+}
+.btn:hover { transform: translateY(-3px); }
+.btn:active { transform: translateY(0) scale(0.98); }
+
+/* Botón principal: amarillo con texto azul (buen contraste) */
+.btn--primary {
+  background: var(--grad-amarillo); color: var(--azul);
+  box-shadow: 0 8px 20px rgba(252, 187, 27, 0.45);
+}
+.btn--primary:hover { box-shadow: 0 12px 28px rgba(252, 187, 27, 0.6); }
+
+/* Botón neón: Zona transaccional */
+.btn--neon {
+  background: var(--grad-azul); color: #fff;
+  box-shadow: 0 0 0 2px var(--azul-neon) inset, 0 8px 22px rgba(25, 211, 255, 0.35);
+}
+.btn--neon:hover { box-shadow: 0 0 0 2px var(--amarillo-neon) inset, 0 10px 28px rgba(25, 211, 255, 0.55); }
+
+/* Enlace con flecha ("Leer más") */
+.link-arrow {
+  display: inline-block; font-weight: 700; color: var(--azul); text-decoration: none;
+  border-bottom: 3px solid var(--amarillo); padding-bottom: 2px;
+  transition: color var(--transicion), letter-spacing var(--transicion);
+}
+.link-arrow::after { content: " →"; }
+.link-arrow:hover { color: var(--azul-medio); letter-spacing: 0.02em; }
+
+/* ESPACIO PARA IMÁGENES.
+   Mientras no pongas tu imagen, muestra un recuadro con el texto de data-label.
+   Cuando agregues <img> dentro, la imagen cubre todo el espacio. */
+.img-slot {
+  position: relative; width: 100%; aspect-ratio: 4 / 3;
+  border-radius: var(--radio-l); overflow: hidden;
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.10) 0 14px, transparent 14px 28px),
+    var(--grad-azul);
+  display: grid; place-items: center;
+}
+.img-slot::before {
+  content: attr(data-label);                      /* Muestra el texto de data-label */
+  color: rgba(255, 255, 255, 0.85); font-size: 0.9rem; text-align: center; padding: 8px;
+}
+.img-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.img-slot:has(img)::before { display: none; }     /* Oculta el texto cuando ya hay imagen */
+.img-slot--wide { aspect-ratio: 3 / 2; border-radius: var(--radio-m) var(--radio-m) 0 0; }
+
+/* Encabezados de sección */
+.section { padding-block: clamp(56px, 8vw, 104px); position: relative; }
+.section--tint { background: linear-gradient(180deg, rgba(227,240,246,0.8), rgba(227,240,246,0.35)); }
+.section__title { font-size: clamp(1.75rem, 3.6vw, 2.5rem); text-align: center; }
+.section__title::after {                          /* Barra amarilla bajo el título */
+  content: ""; display: block; width: 72px; height: 5px; margin: 14px auto 0;
+  border-radius: 99px; background: var(--grad-amarillo);
+}
+.section__lead { text-align: center; max-width: 60ch; margin: 18px auto 44px; }
+
+/* Tarjeta genérica */
+.card {
+  background: var(--blanco); border-radius: var(--radio-m); overflow: hidden;
+  box-shadow: var(--sombra-s); transition: transform var(--transicion), box-shadow var(--transicion);
+}
+.card:hover { transform: translateY(-8px); box-shadow: var(--sombra-l); }
+.card__body { padding: 22px 24px 28px; display: grid; gap: 12px; }
+.card__title { font-size: 1.25rem; }
+
+
+/* =====================================================================
+   5. FONDO DECORATIVO (manchas difuminadas detrás de todo)
+   ===================================================================== */
+.bg-orbs { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.55; }
+.orb--azul     { width: 46vmax; height: 46vmax; left: -14vmax; top: -12vmax; background: #7cc7e3; }
+.orb--amarillo { width: 34vmax; height: 34vmax; right: -10vmax; top: 24vh;  background: #ffe18a; }
+.orb--neon     { width: 30vmax; height: 30vmax; left: 30vw;  bottom: -16vmax; background: #9bf0ff; }
+
+
+/* =====================================================================
+   6. ENCABEZADO Y MENÚ
+   ===================================================================== */
+.site-header { position: sticky; top: 0; z-index: 100; }
+
+/* El vidrio va en un pseudo-elemento y NO en el header:
+   si el header tuviera backdrop-filter, el menú móvil (position: fixed)
+   quedaría "atrapado" dentro de él y se vería cortado. */
+.site-header::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  border-bottom: 1px solid rgba(4, 53, 75, 0.08);
+  box-shadow: var(--sombra-s);
+}
+
+/* Barra de accesibilidad (se oculta al bajar, clase .scrolled puesta por JS) */
+.utilbar {
+  background: var(--azul); color: #fff; font-size: 0.875rem;
+  max-height: 60px; overflow: hidden; transition: max-height var(--transicion);
+}
+.site-header.scrolled .utilbar { max-height: 0; }
+.utilbar__inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 6px; flex-wrap: wrap; }
+.fontctl { display: flex; gap: 8px; }
+.fontctl__btn {
+  min-height: 36px; min-width: 44px; padding: 4px 14px; border-radius: 999px;
+  border: 2px solid var(--amarillo-neon); background: transparent; color: #fff; font-weight: 700;
+  transition: background var(--transicion), color var(--transicion);
+}
+.fontctl__btn:hover, .fontctl__btn--plus { background: var(--amarillo); color: var(--azul); border-color: var(--amarillo); }
+
+/* Barra principal */
+.navbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: var(--altura-header); }
+
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand__mark {
+  width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center;
+  background: var(--grad-azul); color: var(--amarillo); font-weight: 700; font-size: 1.4rem;
+  box-shadow: 0 0 0 3px rgba(25, 211, 255, 0.35);
+}
+.brand__name { font-weight: 700; font-size: 1.3rem; color: var(--azul); }
+/* Logo en la barra de navegación */
+.brand__logo {
+  height: 52px;      /* Alto del logo: sube o baja este número para ajustarlo */
+  width: auto;       /* El ancho se calcula solo para no deformar la imagen */
+  display: block;
+  object-fit: contain;
+}
+
+/* Lista del menú (escritorio) */
+.nav__list { display: flex; align-items: center; gap: 4px; }
+.nav__link {
+  position: relative; display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 14px; border: 0; background: none; border-radius: 999px;
+  font-weight: 700; font-size: 0.95rem; color: var(--azul); text-decoration: none;
+  transition: background var(--transicion), color var(--transicion);
+}
+.nav__link:hover { background: var(--azul-suave); }
+/* Enlace activo (la sección que se está viendo) */
+.nav__link.is-active { background: var(--azul); color: #fff; }
+.chev { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; transition: transform var(--transicion); }
+.has-sub.open > .nav__link .chev { transform: rotate(180deg); }
+
+/* Submenús (escritorio): aparecen con hover, foco o clic */
+.has-sub { position: relative; }
+.submenu {
+  position: absolute; top: 100%; left: 0; min-width: 260px; padding: 10px; margin-top: 6px;
+  background: rgba(255, 255, 255, 0.92); border: 1px solid var(--vidrio-borde); border-radius: var(--radio-m);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: var(--sombra-l);
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity var(--transicion), transform var(--transicion), visibility var(--transicion);
+}
+.has-sub:hover > .submenu, .has-sub:focus-within > .submenu, .has-sub.open > .submenu {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.submenu a {
+  display: block; padding: 11px 14px; border-radius: var(--radio-s);
+  text-decoration: none; color: var(--negro); font-size: 0.95rem;
+  transition: background var(--transicion), padding-left var(--transicion);
+}
+.submenu a:hover { background: var(--azul-suave); padding-left: 20px; border-left: 4px solid var(--amarillo); }
+
+.nav__cta { margin-left: 8px; }
+.nav__cta .btn { min-height: 44px; padding-inline: 20px; font-size: 0.95rem; }
+
+/* Botón hamburguesa (oculto en escritorio) */
+.burger {
+  display: none; width: 52px; height: 52px; border-radius: 16px; border: 2px solid var(--azul);
+  background: var(--blanco); flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+}
+.burger span { width: 24px; height: 3px; border-radius: 3px; background: var(--azul); transition: transform var(--transicion), opacity var(--transicion); }
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+.nav-backdrop { display: none; }
+
+
+/* =====================================================================
+   7. CARRUSEL PRINCIPAL
+   Cada .slide ocupa el 100% del ancho; el .slider__track se desplaza con JS.
+   ===================================================================== */
+.hero { padding-block: clamp(24px, 4vw, 48px) 0; }
+.slider { position: relative; overflow: hidden; }   /* overflow oculta los slides que están fuera de vista */
+.slider__track {
+  display: flex;
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.2, 1);   /* Velocidad del cambio de slide */
+}
+.slide {
+  flex: 0 0 100%;                                  /* Cada slide = 100% del ancho */
+  display: grid; grid-template-columns: 1.05fr 1fr; align-items: center;
+  gap: clamp(20px, 4vw, 56px);
+  padding: 20px 24px 44px;                         /* Espacio extra abajo/lados para sombras y marco amarillo */
+}
+
+/* Imagen: marco amarillo desplazado detrás para dar profundidad */
+.slide__media { position: relative; }
+.slide__media::before {
+  content: ""; position: absolute; inset: 18px -18px -18px 18px; z-index: -1;
+  border-radius: var(--radio-l); background: var(--grad-amarillo); opacity: 0.85;
+}
+.slide__media .img-slot { box-shadow: var(--sombra-l); }
+
+.slide__body { padding: clamp(24px, 4vw, 52px); display: grid; gap: 20px; justify-items: start; }
+.slide__title { font-size: clamp(1.9rem, 4.4vw, 3.2rem); }
+.slide__text { font-size: 1.15rem; max-width: 46ch; }
+
+/* Controles del carrusel */
+.slider__controls { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 28px; }
+.slider__arrow {
+  width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--azul);
+  background: var(--blanco); display: grid; place-items: center; box-shadow: var(--sombra-s);
+  transition: background var(--transicion), transform var(--transicion);
+}
+.slider__arrow svg { width: 24px; height: 24px; fill: none; stroke: var(--azul); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.slider__arrow:hover { background: var(--amarillo); transform: scale(1.08); }
+.slider__dots { display: flex; gap: 10px; }
+.slider__dot {
+  width: 14px; height: 14px; border-radius: 99px; border: 0; padding: 0;
+  background: rgba(4, 53, 75, 0.25); transition: width var(--transicion), background var(--transicion);
+}
+.slider__dot[aria-selected="true"] { width: 38px; background: var(--grad-azul); background-color: var(--azul); }
+
+
+/* =====================================================================
+   8. ACCESOS RÁPIDOS (5 botones)
+   ===================================================================== */
+.quick { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+.quick__btn {
+  display: grid; justify-items: center; gap: 14px; padding: 28px 12px; text-decoration: none;
+  border-radius: var(--radio-l); background: var(--vidrio); border: 1px solid var(--vidrio-borde);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: var(--sombra-s);
+  font-weight: 700; color: var(--azul);
+  transition: transform var(--transicion), box-shadow var(--transicion), background var(--transicion), color var(--transicion);
+}
+.quick__icon {
+  width: 76px; height: 76px; border-radius: 24px; display: grid; place-items: center;
+  background: var(--grad-azul); box-shadow: 0 0 0 4px rgba(25, 211, 255, 0.25);
+  transition: transform 0.5s ease, background var(--transicion);
+}
+.quick__icon svg { width: 40px; height: 40px; fill: none; stroke: var(--amarillo); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Al pasar el mouse: sube, el icono gira un poco y el fondo se vuelve azul */
+.quick__btn:hover { transform: translateY(-10px); background: var(--azul); color: #fff; box-shadow: var(--sombra-l); }
+.quick__btn:hover .quick__icon { transform: rotate(-8deg) scale(1.1); background: var(--grad-amarillo); }
+.quick__btn:hover .quick__icon svg { stroke: var(--azul); }
+
+
+/* =====================================================================
+   9. NOTICIAS
+   ===================================================================== */
+.news { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.news__card .card__text { color: #4a4545; }
+
+
+/* =====================================================================
+   10. CONVENIOS
+   ===================================================================== */
+.search { max-width: 520px; margin: 0 auto 36px; display: grid; gap: 8px; }
+.search__label { font-weight: 700; color: var(--azul); }
+.search__input {
+  width: 100%; min-height: 54px; padding: 12px 22px; border-radius: 999px;
+  border: 2px solid rgba(4, 53, 75, 0.25); background: rgba(255,255,255,0.85); font: inherit; color: var(--negro);
+  transition: border-color var(--transicion), box-shadow var(--transicion);
+}
+.search__input:focus { outline: none; border-color: var(--azul-neon); box-shadow: 0 0 0 5px rgba(25, 211, 255, 0.25); }
+
+.agreements { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
+.agreements__empty { text-align: center; font-weight: 700; padding: 32px 0; }
+
+/* Tarjeta de convenio (generada por JS). Es un <button> para que sea accesible con teclado. */
+.agreement {
+  text-align: left; border: 0; padding: 0; background: var(--blanco); border-radius: var(--radio-m);
+  overflow: hidden; box-shadow: var(--sombra-s); display: grid; grid-template-rows: auto 1fr;
+  transition: transform var(--transicion), box-shadow var(--transicion);
+}
+.agreement:hover { transform: translateY(-8px) rotate(-0.4deg); box-shadow: var(--sombra-l); }
+.agreement__body { padding: 18px 20px 22px; display: grid; gap: 8px; align-content: start; }
+.agreement__title { font-size: 1.2rem; color: var(--azul); }
+.agreement__text { font-size: 0.97rem; color: #4a4545; }
+.agreement__more { margin-top: 6px; font-weight: 700; color: var(--azul); }
+.agreement__more::after { content: " +"; color: var(--amarillo); font-size: 1.2em; }
+.agreement[hidden] { display: none; }
+
+/* Ventana emergente */
+.modal { border: 0; padding: 0; background: transparent; max-width: min(560px, 92vw); width: 100%; overflow: visible; }
+.modal::backdrop { background: rgba(4, 53, 75, 0.55); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.modal[open] { animation: pop 0.35s ease; }
+@keyframes pop { from { opacity: 0; transform: translateY(20px) scale(0.96); } to { opacity: 1; transform: none; } }
+.modal__box { position: relative; padding: 18px 18px 28px; display: grid; gap: 14px; background: rgba(255,255,255,0.94); }
+.modal__box .img-slot--wide { border-radius: var(--radio-m); }
+.modal__title { font-size: 1.6rem; padding-inline: 8px; }
+.modal__text, .modal__note { padding-inline: 8px; }
+.modal__note { font-size: 0.9rem; color: #5b5656; }
+.modal__box .btn { justify-self: start; margin-left: 8px; }
+.modal__close {
+  position: absolute; top: 12px; right: 12px; z-index: 2; width: 46px; height: 46px; border-radius: 50%;
+  border: 0; background: var(--amarillo); color: var(--azul); font-size: 1.8rem; line-height: 1; font-weight: 700;
+  transition: transform var(--transicion);
+}
+.modal__close:hover { transform: rotate(90deg); }
+
+
+/* =====================================================================
+   11. INFORMACIÓN IMPORTANTE
+   ===================================================================== */
+.info { display: grid; grid-template-columns: 1fr 1.1fr; align-items: center; gap: clamp(24px, 5vw, 64px); }
+.info__media .img-slot { aspect-ratio: 7 / 6; box-shadow: var(--sombra-l); }
+.info__body { padding: clamp(24px, 4vw, 48px); display: grid; gap: 16px; }
+.info__title { font-size: clamp(1.7rem, 3.4vw, 2.3rem); }
+.info__body strong { color: var(--azul); }
+
+/* Recuadro "¡Recuerda!" */
+.remember {
+  margin-top: 8px; padding: 20px 24px; border-radius: var(--radio-m);
+  background: var(--grad-amarillo); color: var(--azul); box-shadow: 0 10px 26px rgba(252, 187, 27, 0.35);
+}
+.remember__title { font-size: 1.3rem; margin-bottom: 6px; color: var(--azul); }
+.remember ul { margin-top: 8px; display: grid; gap: 4px; }
+.remember li::before { content: "● "; font-size: 0.7em; vertical-align: middle; }
+
+
+/* =====================================================================
+   12. LOGOS (4 espacios)
+   ===================================================================== */
+.section--logos { padding-block: 40px; }
+.logos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; align-items: center; }
+.logo-slot {
+  aspect-ratio: 3 / 2; border-radius: var(--radio-m); background: rgba(255,255,255,0.7);
+  border: 2px dashed rgba(4, 53, 75, 0.3); display: grid; place-items: center;
+  transition: transform var(--transicion), border-color var(--transicion);
+}
+.logo-slot::before { content: attr(data-label); color: rgba(4, 53, 75, 0.55); font-size: 0.9rem; }
+.logo-slot:has(img)::before { display: none; }
+.logo-slot img { max-height: 80%; width: auto; object-fit: contain; }
+.logo-slot:hover { transform: translateY(-4px); border-color: var(--amarillo); }
+
+
+/* =====================================================================
+   13. PIE DE PÁGINA
+   ===================================================================== */
+.footer { background: var(--grad-azul); color: #e8f3f8; padding-top: 64px; position: relative; }
+.footer::before {                                  /* Línea neón superior */
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; background: var(--grad-neon);
+}
+.footer__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding-bottom: 48px; }
+.footer h3 { color: var(--amarillo); font-size: 1.05rem; margin: 22px 0 8px; }
+.footer h3:first-child { margin-top: 0; }
+.footer address { font-style: normal; }
+.footer ul { display: grid; gap: 6px; }
+.footer a { color: #fff; text-underline-offset: 4px; }
+.footer a:hover { color: var(--amarillo-neon); }
+.footer__small { font-size: 0.9rem; opacity: 0.85; }
+.footer__note { margin-top: 14px; padding: 12px 16px; border-left: 4px solid var(--amarillo); background: rgba(255,255,255,0.08); border-radius: 0 var(--radio-s) var(--radio-s) 0; }
+.lost-card { margin-top: 16px; padding: 16px 18px; border-radius: var(--radio-m); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); display: grid; gap: 4px; }
+.lost-card a { font-weight: 700; font-size: 1.1rem; }
+.footer__bottom { background: rgba(0, 0, 0, 0.22); padding-block: 16px; text-align: center; font-size: 0.9rem; }
+
+
+/* =====================================================================
+   14. BOTONES FLOTANTES
+   ===================================================================== */
+/* Tres botones en el lado derecho, centrados verticalmente */
+.floaters { position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 90; display: grid; gap: 10px; }
+.floater {
+  display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 16px;
+  border-radius: 28px 0 0 28px; color: #fff; text-decoration: none; font-weight: 700; font-size: 0.9rem;
+  box-shadow: var(--sombra-m);
+  /* Truco: el texto queda escondido a la derecha y se desliza al pasar el mouse */
+  transform: translateX(calc(100% - 56px)); transition: transform var(--transicion);
+}
+.floater svg { flex: 0 0 24px; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; margin-left: 0; }
+.floater__label { white-space: nowrap; }
+.floater:hover, .floater:focus-visible { transform: translateX(0); }
+.floater--virtual { background: var(--grad-azul); }
+.floater--wa      { background: linear-gradient(135deg, #1faa59, #25d366); }
+.floater--pqr     { background: var(--grad-amarillo); color: var(--azul); }
+
+/* Botón volver arriba */
+.to-top {
+  position: fixed; right: 18px; bottom: 18px; z-index: 90; width: 54px; height: 54px; border-radius: 50%;
+  border: 2px solid var(--amarillo); background: var(--azul); display: grid; place-items: center;
+  box-shadow: 0 0 0 4px rgba(25, 211, 255, 0.25), var(--sombra-m);
+  opacity: 0; visibility: hidden; transform: translateY(16px);
+  transition: opacity var(--transicion), transform var(--transicion), visibility var(--transicion);
+}
+.to-top svg { width: 26px; height: 26px; fill: none; stroke: var(--amarillo); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.to-top.show { opacity: 1; visibility: visible; transform: none; }
+.to-top:hover { transform: translateY(-4px); }
+
+
+/* =====================================================================
+   15. ANIMACIONES AL HACER SCROLL
+   Los elementos con .reveal arrancan invisibles; JS les agrega .is-visible.
+   Si JavaScript no carga, la regla .no-js los deja visibles.
+   ===================================================================== */
+.js .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.js .reveal.is-visible { opacity: 1; transform: none; }
+/* Las tarjetas hermanas entran una tras otra */
+.js .news .reveal:nth-child(2) { transition-delay: 0.12s; }
+.js .news .reveal:nth-child(3) { transition-delay: 0.24s; }
+
+
+/* =====================================================================
+   16. RESPONSIVE
+   Los "breakpoints" cambian el diseño según el ancho de pantalla.
+   ===================================================================== */
+
+/* ---------- Tablet y celular grande (hasta 1080px): menú hamburguesa ---------- */
+@media (max-width: 1080px) {
+  .burger { display: flex; }
+
+  /* El menú se vuelve un panel lateral que entra desde la derecha */
+  .nav {
+    position: fixed; top: 0; right: 0; z-index: 130; width: min(88vw, 380px); height: 100dvh;
+    padding: 24px 18px 40px; overflow-y: auto; background: var(--blanco); box-shadow: var(--sombra-l);
+    transform: translateX(105%); transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .nav.open { transform: translateX(0); }
+
+  .nav-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 120; background: rgba(4, 53, 75, 0.5);
+    opacity: 0; visibility: hidden; transition: opacity var(--transicion), visibility var(--transicion);
+  }
+  .nav-backdrop.show { opacity: 1; visibility: visible; }
+
+  .nav__list { flex-direction: column; align-items: stretch; gap: 6px; padding-top: 56px; }
+  .nav__link { width: 100%; justify-content: space-between; padding: 16px 18px; font-size: 1.05rem; border-radius: var(--radio-m); }
+
+  /* Submenús tipo acordeón: se abren con un toque */
+  .submenu {
+    position: static; min-width: 0; margin: 4px 0 8px 12px; box-shadow: none; background: var(--azul-suave);
+    display: none; opacity: 1; visibility: visible; transform: none;
+  }
+  .has-sub:hover > .submenu { display: none; }       /* En celular el hover no abre nada */
+  .has-sub.open > .submenu { display: block; }
+  .nav__cta { margin: 12px 0 0; }
+  .nav__cta .btn { width: 100%; min-height: 54px; }
+
+  .quick { grid-template-columns: repeat(3, 1fr); }
+  .news { grid-template-columns: repeat(2, 1fr); }
+  .footer__grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---------- Celular (hasta 760px) ---------- */
+@media (max-width: 760px) {
+  /* Carrusel: imagen arriba, texto abajo */
+  .slide { grid-template-columns: 1fr; }
+  .slide__media::before { inset: 12px -8px -12px 8px; }
+  .slide__body { justify-items: stretch; }
+  .slide__body .btn { width: 100%; }
+
+  .info { grid-template-columns: 1fr; }
+  .quick { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .quick li:last-child { grid-column: 1 / -1; }      /* El 5.º botón ocupa todo el ancho */
+  .news { grid-template-columns: 1fr; }
+  .logos { grid-template-columns: repeat(2, 1fr); }
+  .footer__grid { grid-template-columns: 1fr; }
+
+  .utilbar__text { display: none; }                  /* En celular dejamos solo los botones A− / A+ */
+  .utilbar__inner { justify-content: center; }
+  .brand__name { font-size: 1.1rem; }
+
+  /* Botones flotantes más pequeños y sin texto deslizante */
+  .floater { height: 48px; transform: translateX(calc(100% - 48px)); padding: 0 12px; }
+  .to-top { right: 12px; bottom: 12px; width: 50px; height: 50px; }
+}   

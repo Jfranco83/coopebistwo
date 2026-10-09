@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<!--
+  =====================================================================
+  LANDING PAGE INSTITUCIONAL - COOPEBIS
+  =====================================================================
+  ARCHIVOS DEL PROYECTO (deben estar en la MISMA carpeta):
+    - index.html  -> Estructura y contenido (este archivo)
+    - style.css   -> Colores, tipografía, diseño y animaciones
+    - script.js   -> Comportamiento (menú, carrusel, tamaño de letra, etc.)
+
+  CÓMO AGREGAR TUS IMÁGENES:
+    Cada espacio de imagen es un <div class="img-slot">. Para poner tu imagen,
+    reemplaza el contenido del div por una etiqueta <img>. Ejemplo:
+
+      <div class="img-slot" data-label="Imagen 1 · 800×600">
+        <img src="img/slide-1.jpg" alt="Descripción de la imagen">
+      </div>
+
+    Recomendación: crea una carpeta "img" junto a estos archivos.
+    Los textos de ejemplo se pueden editar libremente.
+
+  LOS ENLACES href="#" SON PROVISIONALES:
+    Reemplázalos por la dirección real de cada página (ej: href="https://...").
+  =====================================================================
+-->
+<html lang="es">
+<head>
+  <!-- Codificación de caracteres: necesaria para tildes y la "ñ" -->
+  <meta charset="UTF-8">
+
+  <!-- Hace que la página se adapte al ancho del celular (RESPONSIVE) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/images/ico-coopebis.jpg" type="image-icon"> 
+
+  <!-- Título que aparece en la pestaña del navegador y en Google -->
+  <title>Coopebis | Cooperativa de vínculo cerrado</title>
+  <meta name="description" content="Sitio institucional de Coopebis: ahorro, crédito, convenios, bienestar y servicios para asociados.">
+
+  <!-- Color de la barra del navegador en celulares -->
+  <meta name="theme-color" content="#04354b">
+
+  <!--
+    TIPOGRAFÍA:
+    Century Gothic es una fuente instalada en Windows/Mac con Office; NO está en todos los
+    celulares. Por eso cargamos "Questrial" (gratuita y muy parecida) como respaldo.
+    Si algún día instalas Century Gothic como archivo web, quita estas 3 líneas.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Favicon (ícono de la pestaña): coloca tu archivo en img/favicon.png -->
+  <!-- <link rel="icon" href="img/favicon.png"> -->
+</head>
+
+<body>
+
+  <!-- Enlace para teclado/lectores de pantalla: salta directo al contenido -->
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <!-- Fondo decorativo: manchas de color difuminadas que dan vida al efecto "vidrio" -->
+  <div class="bg-orbs" aria-hidden="true">
+    <span class="orb orb--azul"></span>
+    <span class="orb orb--amarillo"></span>
+    <span class="orb orb--neon"></span>
+  </div>
+
+  <!-- =================================================================
+       ENCABEZADO (STICKY): barra de accesibilidad + logo + menú
+       ================================================================= -->
+  <header class="site-header" id="inicio">
+
+    <!-- Barra superior: control de tamaño de letra (accesibilidad) -->
+    <div class="utilbar">
+      <div class="container utilbar__inner">
+        <p class="utilbar__text">¿Se te dificulta leer? Ajusta el tamaño de la letra:</p>
+        <div class="fontctl" role="group" aria-label="Tamaño de letra">
+          <button type="button" class="fontctl__btn" id="font-down" aria-label="Disminuir tamaño de letra">A−</button>
+          <button type="button" class="fontctl__btn fontctl__btn--plus" id="font-up" aria-label="Aumentar tamaño de letra">A+ Agrandar letra</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra principal -->
+    <div class="container navbar">
+
+      <!-- LOGO: reemplaza el texto por tu imagen: <img src="img/logo.png" alt="Coopebis"> -->
+     <!-- LOGO: cambia "img/logo.png" por la ruta de tu archivo -->
+<a class="brand" href="#inicio" aria-label="Coopebis, ir al inicio">
+  <!-- alt = texto que leen los lectores de pantalla y que se ve si la imagen no carga -->
+  <img class="brand__logo" src="/images/logo-coopebis.png" alt="Coopebis">
+</a>
+
+      <!-- Botón hamburguesa (solo visible en celulares/tablets) -->
+      <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <!-- Fondo oscuro detrás del menú móvil -->
+      <div class="nav-backdrop" id="nav-backdrop"></div>
+
+      <!-- MENÚ PRINCIPAL -->
+      <nav class="nav" id="menu" aria-label="Menú principal">
+        <ul class="nav__list">
+
+          <!-- 1. NOSOTROS (con submenú) -->
+          <li class="has-sub">
+            <button type="button" class="nav__link" aria-expanded="false" aria-haspopup="true">
+              Nosotros
+              <svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7l5 6 5-6" /></svg>
+            </button>
+            <ul class="submenu">
+              <li><a href="#">Resultados de documentación</a></li>
+              <li><a href="#">Gestión de riesgo</a></li>
+            </ul>
+          </li>
+
+          <!-- 2. ASÓCIATE -->
+          <li><a class="nav__link" href="#">Asóciate</a></li>
+
+          <!-- 3. PORTAFOLIO (con submenú). data-spy = sección que lo resalta al hacer scroll -->
+          <li class="has-sub">
+            <button type="button" class="nav__link" data-spy="accesos" aria-expanded="false" aria-haspopup="true">
+              Portafolio
+              <svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7l5 6 5-6" /></svg>
+            </button>
+            <ul class="submenu">
+              <li><a href="#">Crédito</a></li>
+              <li><a href="#">Ahorro</a></li>
+            </ul>
+          </li>
+
+          <!-- 4. CONVENIOS -->
+          <li><a class="nav__link" href="#convenios" data-spy="convenios">Convenios</a></li>
+
+          <!-- 5. BIENESTAR (con submenú de 5 opciones) -->
+          <li class="has-sub">
+            <button type="button" class="nav__link" aria-expanded="false" aria-haspopup="true">
+              Bienestar
+              <svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7l5 6 5-6" /></svg>
+            </button>
+            <ul class="submenu">
+              <li><a href="#">Auxilio</a></li>
+              <li><a href="#">Incentivo</a></li>
+              <li><a href="#">Comité de educación</a></li>
+              <li><a href="#">Comité de bienestar</a></li>
+              <li><a href="#">Comité de equidad de género</a></li>
+            </ul>
+          </li>
+
+          <!-- 6. PORTAL DE SERVICIOS -->
+          <li><a class="nav__link" href="#">Portal de servicios</a></li>
+
+          <!-- 7. CONTACTO (lleva al pie de página) -->
+          <li><a class="nav__link" href="#contacto" data-spy="contacto">Contacto</a></li>
+
+          <!-- 8. BOTÓN ZONA TRANSACCIONAL (destacado) -->
+          <li class="nav__cta"><a class="btn btn--neon" href="#">Zona transaccional</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- =================================================================
+         SECCIÓN 1: CARRUSEL PRINCIPAL (6 slides)
+         Imagen a la IZQUIERDA, texto a la DERECHA (en celular: imagen arriba).
+         Para cambiar los textos, edita los <h1>/<h2>, <p> y el botón de cada slide.
+         ================================================================= -->
+    <section class="hero" aria-roledescription="carrusel" aria-label="Novedades de la cooperativa">
+      <div class="container">
+        <div class="slider" id="slider">
+
+          <!-- Contenedor que se desplaza de lado a lado -->
+          <div class="slider__track" id="slider-track">
+
+            <!-- SLIDE 1 -->
+            <article class="slide" aria-roledescription="diapositiva" aria-label="1 de 6">
+              <div class="slide__media">
+                <div class="img-slot" data-label="Imagen slide 1 · 800×600"><!-- <img src="img/slide-1.jpg" alt="..."> --></div>
+              </div>
+              <div class="slide__body glass">
+                <h1 class="slide__title">Tu cooperativa, tu tranquilidad</h1>
+                <p class="slide__text">Aquí cada asociado es también dueño. Conoce cómo cuidamos tu ahorro, tu familia y tu futuro con seriedad y cercanía.</p>
+                <a class="btn btn--primary" href="#">Conócenos</a>
+              </div>
+            </article>
+
+            <!-- SLIDE 2 -->
+            <article class="slide" aria-roledescription="diapositiva" aria-label="2 de 6">
+              <div class="slide__media">
+                <div class="img-slot" data-label="Imagen slide 2 · 800×600"></div>
+              </div>
+              <div class="slide__body glass">
+                <h2 class="slide__title">Ahorra con propósito</h2>
+                <p class="slide__text">Cada aporte construye una meta: educación, vivienda, vacaciones o un respaldo para lo inesperado. Elige la línea que va contigo.</p>
+                <a class="btn btn--primary" href="#">Ver líneas de ahorro</a>
+              </div>
+            </article>
+
+            <!-- SLIDE 3 -->
+            <article class="slide" aria-roledescription="diapositiva" aria-label="3 de 6">
+              <div class="slide__media">
+                <div class="img-slot" data-label="Imagen slide 3 · 800×600"></div>
+              </div>
+              <div class="slide__body glass">
+                <h2 class="slide__title">Crédito que te acompaña</h2>
+                <p class="slide__text">Financia tus proyectos con trámites claros y asesoría cercana, pensados para quienes hacen parte de la cooperativa.</p>
+                <a class="btn btn--primary" href="#">Conocer créditos</a>
+              </div>
+            </article>
+
+            <!-- SLIDE 4 -->
+            <article class="slide" aria-roledescription="diapositiva" aria-label="4 de 6">
+              <div class="slide__media">
+                <div class="img-slot" data-label="Imagen slide 4 · 800×600"></div>
+              </div>
+              <div class="slide__body glass">
+                <h2 class="slide__title">Convenios que se sienten</h2>
+                <p class="slide__text">Cine, comida, recreación, movilidad y más. Aprovecha los beneficios que tenemos con aliados por ser asociado.</p>
+                <a class="btn btn--primary" href="#convenios">Ver convenios</a>
+              </div>
+            </article>
+
+            <!-- SLIDE 5 -->
+            <article class="slide" aria-roledescription="diapositiva" aria-label="5 de 6">
+              <div class="slide__media">
+                <div class="img-slot" data-label="Imagen slide 5 · 800×600"></div>
+              </div>
+              <div class="slide__body glass">
+                <h2 class="slide__title">Bienestar para toda la familia</h2>
+                <p class="slide__text">Auxilios, incentivos y comités que trabajan por la educación, la equidad y la calidad de vida de los asociados.</p>
+                <a class="btn btn--primary" href="#">Conocer el bienestar</a>
+              </div>
+            </article>
+
+            <!-- SLIDE 6 -->
+            <article class="slide" aria-roledescription="diapositiva" aria-label="6 de 6">
+              <div class="slide__media">
+                <div class="img-slot" data-label="Imagen slide 6 · 800×600"></div>
+              </div>
+              <div class="slide__body glass">
+                <h2 class="slide__title">Tus gestiones, más simples</h2>
+                <p class="slide__text">Ingresa al portal de servicios y realiza tus trámites de forma segura, sin filas y cuando lo necesites.</p>
+                <a class="btn btn--primary" href="#">Entrar al portal</a>
+              </div>
+            </article>
+          </div>
+
+          <!-- Controles: flechas, puntos y pausa -->
+          <div class="slider__controls">
+            <button type="button" class="slider__arrow" id="slider-prev" aria-label="Diapositiva anterior">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+            </button>
+            <div class="slider__dots" id="slider-dots" role="tablist" aria-label="Elegir diapositiva"></div>
+            <button type="button" class="slider__arrow" id="slider-next" aria-label="Diapositiva siguiente">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECCIÓN 2: 5 BOTONES DE ACCESO RÁPIDO (animados)
+         Cambia el href de cada botón por la página real.
+         ================================================================= -->
+    <section class="section" id="accesos" aria-labelledby="accesos-titulo">
+      <div class="container">
+        <h2 class="section__title reveal" id="accesos-titulo">¿Qué necesitas hoy?</h2>
+        <p class="section__lead reveal">Elige una opción y te llevamos directo.</p>
+
+        <ul class="quick reveal">
+          <li>
+            <a class="quick__btn" href="#">
+              <span class="quick__icon" aria-hidden="true">
+                <!-- Icono: monedas apiladas -->
+                <svg viewBox="0 0 32 32"><ellipse cx="16" cy="9" rx="9" ry="4"/><path d="M7 9v7c0 2.2 4 4 9 4s9-1.800 9-4V9"/><path d="M7 16v7c0 2.200 4 4 9 4s9-1.800 9-4v-7"/></svg>
+              </span>
+              <span class="quick__label">Ahorro</span>
+            </a>
+          </li>
+          <li>
+            <a class="quick__btn" href="#">
+              <span class="quick__icon" aria-hidden="true">
+                <!-- Icono: tarjeta -->
+                <svg viewBox="0 0 32 32"><rect x="3" y="7" width="26" height="18" rx="3"/><path d="M3 13h26M8 20h6"/></svg>
+              </span>
+              <span class="quick__label">Crédito</span>
+            </a>
+          </li>
+          <li>
+            <a class="quick__btn" href="#convenios">
+              <span class="quick__icon" aria-hidden="true">
+                <!-- Icono: etiqueta de descuento -->
+                <svg viewBox="0 0 32 32"><path d="M4 16.500V5h11.500L28 17.500 17.500 28z"/><circle cx="11" cy="11" r="1.800"/></svg>
+              </span>
+              <span class="quick__label">Convenios</span>
+            </a>
+          </li>
+          <li>
+            <a class="quick__btn" href="#">
+              <span class="quick__icon" aria-hidden="true">
+                <!-- Icono: regalo -->
+                <svg viewBox="0 0 32 32"><rect x="4" y="12" width="24" height="16" rx="2"/><path d="M2 8h28v4H2zM16 8v20M16 8c-3-6-9-4-7 0M16 8c3-6 9-4 7 0"/></svg>
+              </span>
+              <span class="quick__label">Beneficios</span>
+            </a>
+          </li>
+          <li>
+            <a class="quick__btn" href="#">
+              <span class="quick__icon" aria-hidden="true">
+                <!-- Icono: estrella -->
+                <svg viewBox="0 0 32 32"><path d="M16 3l3.800 8.200 8.900 1-6.600 6 1.800 8.800L16 22.600 8.100 27l1.800-8.800-6.600-6 8.900-1z"/></svg>
+              </span>
+              <span class="quick__label">Incentivos</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECCIÓN 3: NOTICIAS COOPEBIS (3 tarjetas)
+         Edita título, texto e imagen de cada tarjeta.
+         ================================================================= -->
+    <section class="section section--tint" id="noticias" aria-labelledby="noticias-titulo">
+      <div class="container">
+        <h2 class="section__title reveal" id="noticias-titulo">Noticias Coopebis</h2>
+        <p class="section__lead reveal">Lo más reciente de nuestra cooperativa.</p>
+
+        <div class="news">
+          <!-- Tarjeta de noticia 1 -->
+          <article class="card news__card reveal">
+            <div class="img-slot img-slot--wide" data-label="Imagen noticia 1 · 600×400"></div>
+            <div class="card__body">
+              <h3 class="card__title">Título de la noticia uno</h3>
+              <p class="card__text">Escribe aquí una descripción breve de la noticia. Procura que sea clara y en máximo tres renglones.</p>
+              <a class="link-arrow" href="#">Leer más</a>
+            </div>
+          </article>
+
+          <!-- Tarjeta de noticia 2 -->
+          <article class="card news__card reveal">
+            <div class="img-slot img-slot--wide" data-label="Imagen noticia 2 · 600×400"></div>
+            <div class="card__body">
+              <h3 class="card__title">Título de la noticia dos</h3>
+              <p class="card__text">Escribe aquí una descripción breve de la noticia. Procura que sea clara y en máximo tres renglones.</p>
+              <a class="link-arrow" href="#">Leer más</a>
+            </div>
+          </article>
+
+          <!-- Tarjeta de noticia 3 -->
+          <article class="card news__card reveal">
+            <div class="img-slot img-slot--wide" data-label="Imagen noticia 3 · 600×400"></div>
+            <div class="card__body">
+              <h3 class="card__title">Título de la noticia tres</h3>
+              <p class="card__text">Escribe aquí una descripción breve de la noticia. Procura que sea clara y en máximo tres renglones.</p>
+              <a class="link-arrow" href="#">Leer más</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECCIÓN 4: CONVENIOS (interactiva)
+         Las tarjetas NO se escriben aquí: se generan desde script.js
+         (busca la lista "CONVENIOS" para editar nombres, textos e imágenes).
+         ================================================================= -->
+    <section class="section" id="convenios" aria-labelledby="convenios-titulo">
+      <div class="container">
+        <h2 class="section__title reveal" id="convenios-titulo">Nuestros convenios</h2>
+        <p class="section__lead reveal">Beneficios exclusivos por ser asociado. Busca el que te interesa o toca una tarjeta para ver el detalle.</p>
+
+        <!-- Buscador: filtra las tarjetas mientras escribes -->
+        <div class="search reveal">
+          <label class="search__label" for="buscar-convenio">Buscar convenio</label>
+          <input class="search__input" id="buscar-convenio" type="search" placeholder="Ej: cine, KFC, Chevrolet…" autocomplete="off" maxlength="40">
+        </div>
+
+        <!-- Aquí JavaScript inserta las tarjetas -->
+        <div class="agreements" id="agreements" aria-live="polite"></div>
+        <p class="agreements__empty" id="agreements-empty" hidden>No encontramos convenios con ese nombre. Prueba con otra palabra.</p>
+      </div>
+    </section>
+
+    <!-- Ventana emergente con el detalle de un convenio (elemento nativo <dialog>) -->
+    <dialog class="modal" id="modal" aria-labelledby="modal-title">
+      <div class="modal__box glass">
+        <button type="button" class="modal__close" id="modal-close" aria-label="Cerrar ventana">×</button>
+        <div class="img-slot img-slot--wide" id="modal-img" data-label="Imagen del convenio"></div>
+        <h3 class="modal__title" id="modal-title"></h3>
+        <p class="modal__text" id="modal-text"></p>
+        <p class="modal__note">Consulta condiciones y vigencia con nuestro equipo.</p>
+        <!-- 573009122149 = WhatsApp 300-912-2149 con indicativo de Colombia (57) -->
+        <a class="btn btn--primary" href="https://wa.me/573009122149" target="_blank" rel="noopener noreferrer">Preguntar por WhatsApp</a>
+      </div>
+    </dialog>
+
+    <!-- =================================================================
+         SECCIÓN 5: INFORMACIÓN IMPORTANTE
+         Imagen a un lado, texto al otro.
+         ================================================================= -->
+    <section class="section section--tint" id="informacion" aria-labelledby="info-titulo">
+      <div class="container info reveal">
+        <div class="info__media">
+          <div class="img-slot" data-label="Imagen información · 700×600"></div>
+        </div>
+        <div class="info__body glass">
+          <h2 class="info__title" id="info-titulo">Información importante</h2>
+          <p>Por cada consignación o retiro en efectivo, igual o superior a <strong>$5.000.000</strong> (cinco millones de pesos), usted debe diligenciar el formato de <strong>Declaración de Operaciones en Efectivo</strong>.</p>
+          <p>Adicionalmente, si es consignación igual o superior a <strong>$10.000.000</strong> (diez millones de pesos) debe entregar a la cooperativa el soporte de dichos ingresos.</p>
+
+          <!-- Recuadro destacado con el horario -->
+          <div class="remember">
+            <h3 class="remember__title">¡Recuerda!</h3>
+            <p>El horario establecido para recepción de pagos y consignación en moneda es:</p>
+            <ul>
+              <li><strong>Lunes a viernes:</strong> hasta las 12 del mediodía.</li>
+              <li><strong>Sábados:</strong> hasta las 10 de la mañana.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECCIÓN 7: LOGOS (4 espacios)
+         Reemplaza cada .logo-slot por <img src="img/logo-1.png" alt="Nombre">
+         ================================================================= -->
+    <section class="section section--logos" aria-label="Entidades aliadas">
+      <div class="container">
+        <ul class="logos reveal">
+          <li>
+  <div class="logo-slot" data-label="Logo 1">
+    <img src="/images/logo-supersolidaria-2023.png" alt="Logo 1">
+  </div>
+</li>
+          <li>
+  <div class="logo-slot" data-label="Logo 1">
+    <img src="/images/Logos-Fogacoop-vertical.png" alt="Logo 1">
+  </div>
+</li>
+ <li>
+  <div class="logo-slot" data-label="Logo 1">
+    <img src="/images/logo-coopebis.png" alt="Logo 1">
+  </div>
+</li>
+ <li>
+  <div class="logo-slot" data-label="Logo 1">
+    <img src="/images/logos_icontec.png" alt="Logo 1">
+  </div>
+</li>
+      </div>
+    </section>
+  </main>
+
+  <!-- =================================================================
+       SECCIÓN 6: PIE DE PÁGINA (footer)
+       ================================================================= -->
+  <footer class="footer" id="contacto">
+    <div class="container footer__grid">
+
+      <div class="footer__col">
+        <h3>Oficina principal y sede administrativa</h3>
+        <address>Carrera 31A # 25A – 17<br>Barrio Gran América</address>
+
+        <h3>Oficina Centro</h3>
+        <address>Carrera 6 # 14 – 98 Of. 1001<br>Edif. Condominio Parque Santander</address>
+      </div>
+
+      <div class="footer__col">
+        <h3>Horarios de atención</h3>
+        <ul>
+          <li><strong>Lunes a viernes:</strong> 8:30 a.m. – 4:00 p.m.</li>
+          <li><strong>Sábados:</strong> 9:00 a.m. – 12:00 m.</li>
+          <li class="footer__small">(Sábados atención solo en oficina principal)</li>
+        </ul>
+        <p class="footer__note"><strong>Nota:</strong> el último día hábil del mes el horario de atención es hasta las 3:00 p.m.</p>
+      </div>
+
+      <div class="footer__col">
+        <h3>Contáctanos</h3>
+        <ul>
+          <!-- href="tel:..." permite llamar con un toque desde el celular -->
+          <li><strong>PBX:</strong> <a href="tel:+576013289099">(601) 328 9099</a></li>
+          <li><strong>WhatsApp:</strong> <a href="https://wa.me/573009122149" target="_blank" rel="noopener noreferrer">300-912-2149</a></li>
+        </ul>
+        <div class="lost-card">
+          <p>En caso de pérdida o robo de su tarjeta comuníquese de manera inmediata:</p>
+          <a href="tel:018000521124">01 8000 521 124</a>
+          <a href="tel:+576044480259">(604) 448 0259</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container">
+        <!-- El año se actualiza solo con script.js -->
+        <p>© <span id="year">2026</span> Coopebis. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =================================================================
+       BOTONES FLOTANTES (lado derecho): sucursal virtual, WhatsApp, PQR
+       ================================================================= -->
+  <aside class="floaters" aria-label="Accesos rápidos">
+    <a class="floater floater--virtual" href="#" aria-label="Sucursal virtual">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+      <span class="floater__label">Sucursal virtual</span>
+    </a>
+    <a class="floater floater--wa" href="https://wa.me/573009122149" target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.300-4.200A8 8 0 1 1 8.300 18.800z"/><path d="M9 9c0 3 3 6 6 6l1-1.500-2-1-1 .7c-1-.5-1.700-1.200-2.200-2.200l.7-1-1-2z"/></svg>
+      <span class="floater__label">WhatsApp</span>
+    </a>
+    <a class="floater floater--pqr" href="#" aria-label="Peticiones, quejas y reclamos">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>
+      <span class="floater__label">PQR</span>
+    </a>
+  </aside>
+
+  <!-- Botón flotante "volver arriba" (aparece al bajar) -->
+  <button type="button" class="to-top" id="to-top" aria-label="Volver arriba">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7" /></svg>
+  </button>
+
+  <!-- Script al final: el HTML ya existe cuando JavaScript se ejecuta -->
+  <script src="script.js"></script>
+</body>
+</html>
